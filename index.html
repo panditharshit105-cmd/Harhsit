@@ -3,326 +3,371 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>AETHER | Neural Suite V13</title>
     
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#010103">
-    
-    <title>DEEP AI | By Harshit</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
-    
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono&display=swap');
+
         :root {
-            --bg: #010103;
-            --primary: #4f46e5; 
-            --secondary: #7c3aed; 
-            --accent: #00d4ff;
-            --gpt-bg: #0d0d0d;
-            --gpt-gray: #171717;
-            --text: #ececec;
-            --border: rgba(255, 255, 255, 0.08);
+            --primary: #8b5cf6; --accent: #00d2ff; --purple: #c084fc;
+            --bg-black: #020205; --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.12); --text-white: #f8fafc;
+            --text-dim: #94a3b8; --glow: rgba(0, 210, 255, 0.3);
+            --gemini-gradient: linear-gradient(90deg, #4285f4, #9b72cb, #d96570, #4285f4);
         }
 
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            font-family: 'Outfit', sans-serif; 
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-        }
-
-        textarea, input { user-select: text !important; }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
         body { 
-            background: var(--bg); 
-            color: var(--text); 
-            height: 100vh; 
-            overflow: hidden; 
-            position: fixed; 
-            width: 100%;
-            overscroll-behavior-y: contain;
+            background: linear-gradient(135deg, #020205 0%, #0f0c29 30%, #302b63 70%, #24243e 100%);
+            color: var(--text-white); height: 100dvh; width: 100vw; overflow: hidden; 
+            display: flex; flex-direction: column; perspective: 1200px;
         }
 
-        #neural-canvas { position: fixed; inset: 0; z-index: -1; opacity: 0.2; }
-
-        /* Splash Screen Style */
+        /* --- SPLASH SCREEN --- */
         #splash-screen {
-            position: fixed;
-            inset: 0;
-            background: var(--bg);
-            z-index: 99999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: 1s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 1;
+            position: fixed; inset: 0; 
+            background: linear-gradient(135deg, #0a0a2e 0%, #1a0a2e 50%, #2e0a2e 100%);
+            z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden;
         }
-
-        .deep-3d-text {
-            font-family: 'Space Grotesk';
-            font-weight: 700;
-            font-size: 3.5rem;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 8px;
-            text-shadow: 
-                0 1px 0 #ccc, 
-                0 2px 0 #c9c9c9, 
-                0 3px 0 #bbb, 
-                0 4px 0 #b9b9b9, 
-                0 5px 0 #aaa, 
-                0 6px 1px rgba(0,0,0,.1), 
-                0 0 5px rgba(0,0,0,.1), 
-                0 1px 3px rgba(0,0,0,.3), 
-                0 3px 5px rgba(0,0,0,.2), 
-                0 5px 10px rgba(0,0,0,.25), 
-                0 10px 10px rgba(0,0,0,.2), 
-                0 20px 20px rgba(0,0,0,.15);
-            transform: perspective(500px) rotateX(10deg);
-            margin-bottom: 10px;
-            animation: textPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes textPulse {
-            0%, 100% { transform: perspective(500px) rotateX(10deg) scale(1); }
-            50% { transform: perspective(500px) rotateX(10deg) scale(1.02); }
-        }
-
-        .sub-text {
-            font-family: 'Space Grotesk';
-            color: rgba(255,255,255,0.5);
-            letter-spacing: 4px;
-            font-size: 0.9rem;
-        }
-
-        .logo { 
-            font-family: 'Space Grotesk'; font-weight: 700; color: var(--accent); 
-            letter-spacing: 4px; font-size: 1.2rem;
-            text-shadow: 1px 1px 0px #007791, 2px 2px 20px rgba(0, 212, 255, 0.4);
-        }
-
-        #profile-modal {
-            position: fixed; top: 0; right: -320px; width: 320px; height: 100vh;
-            background: var(--gpt-bg); border-left: 1px solid var(--border);
-            z-index: 10000; transition: 0.4s;
-            display: flex; flex-direction: column;
-            padding-top: env(safe-area-inset-top);
-        }
-        #profile-modal.active { right: 0; }
-
-        .neural-orb {
-            width: 42px; height: 42px;
-            background: linear-gradient(135deg, var(--accent), var(--secondary));
+        .ai-icon-core {
+            position: relative; width: 100px; height: 100px;
+            background: radial-gradient(circle, var(--accent), var(--purple));
             border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-            animation: morph-jelly 3s linear infinite; box-shadow: 0 0 15px var(--accent);
+            animation: morph 8s ease-in-out infinite, rotate 20s linear infinite;
+            filter: blur(2px); box-shadow: 0 0 50px rgba(0, 210, 255, 0.6);
         }
-        @keyframes morph-jelly {
+        @keyframes morph {
             0%, 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
-            50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; }
+            50% { border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%; }
         }
-
-        .app-container { 
-            width: 100%; max-width: 900px; margin: 0 auto; 
-            height: 100vh; display: flex; flex-direction: column; 
-            padding: 10px 15px; opacity: 0; transition: 1.2s; 
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .splash-text {
+            margin-top: 30px; font-size: 2.5rem; font-weight: 800; letter-spacing: 8px;
+            background: linear-gradient(to right, #00d2ff, #8e44ad);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-transform: uppercase; z-index: 10;
         }
-        
-        #chat-flow { flex: 1; overflow-y: auto; padding: 20px 0; display: flex; flex-direction: column; gap: 15px; scrollbar-width: none; }
-        .msg { max-width: 90%; padding: 12px 16px; border-radius: 18px; line-height: 1.5; font-size: 0.95rem; animation: msgSlide 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28); user-select: text; }
-        .ai-msg { background: rgba(255,255,255,0.04); border: 1px solid var(--border); align-self: flex-start; border-bottom-left-radius: 4px; }
-        .user-msg { background: linear-gradient(135deg, var(--primary), var(--secondary)); align-self: flex-end; border-bottom-right-radius: 4px; }
+        .splash-lines { position: absolute; inset: 0; pointer-events: none; }
 
-        .input-area { 
-            background: #0a0a12; border-radius: 24px; padding: 12px; 
-            border: 1px solid var(--border); margin-bottom: calc(15px + env(safe-area-inset-bottom));
+        /* --- LOGIN PORTAL --- */
+        #login-portal { position: fixed; inset: 0; background: rgba(2,2,5,0.98); z-index: 9500; display: none; flex-direction: column; align-items: center; justify-content: center; backdrop-filter: blur(80px); padding: 25px; }
+        .portal-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 40px 30px; border-radius: 35px; width: 100%; max-width: 400px; text-align: center; }
+        .portal-input { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--border); padding: 16px; border-radius: 20px; color: #fff; margin-bottom: 15px; outline: none; }
+        .portal-btn { background: linear-gradient(135deg, var(--accent), var(--primary)); color: #000; padding: 16px; border-radius: 20px; border: none; font-weight: 800; cursor: pointer; width: 100%; }
+
+        /* --- LAYOUT & UI --- */
+        header { padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; background: rgba(5,5,10,0.4); backdrop-filter: blur(25px); border-bottom: 1px solid var(--border); z-index: 1000; }
+        
+        .sidebar { position: fixed; left: -300px; top: 0; width: 280px; height: 100%; background: rgba(5,5,12,0.98); border-right: 1px solid var(--border); padding: 30px; z-index: 2000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(50px); }
+        .sidebar.open { left: 0; }
+        #sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1500; display: none; backdrop-filter: blur(3px); }
+
+        .persona-btn { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 12px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; color: #fff; margin-bottom: 10px; width: 100%; transition: 0.2s; }
+        .persona-btn.active { border-color: var(--accent); background: rgba(0, 210, 255, 0.1); }
+
+        #chat-scroller { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; scroll-behavior: smooth; transform-style: preserve-3d; }
+        .msg { width: 100%; max-width: 100%; position: relative; transition: 0.3s; }
+        .msg-role { font-size: 0.65rem; font-weight: 800; color: var(--accent); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
+        .user-msg .msg-role { color: var(--purple); text-align: right; }
+        .msg-content { font-size: 0.95rem; line-height: 1.5; color: #f1f5f9; background: var(--glass); border: 1px solid var(--border); padding: 12px 16px; border-radius: 18px; backdrop-filter: blur(15px); width: fit-content; max-width: 88%; transition: 0.3s; }
+        .user-msg .msg-content { margin-left: auto; background: rgba(139, 92, 246, 0.1); }
+        
+        /* Ghost Mode Feature */
+        .ghost-active .msg-content { filter: blur(12px); opacity: 0.2; }
+
+        /* Input Area */
+        .input-outer { padding: 10px 15px 30px 15px; background: rgba(2,2,5,0.9); z-index: 1100; border-top: 1px solid var(--border); }
+        .input-bar { position: relative; max-width: 800px; margin: 0 auto; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 30px; padding: 5px 12px; display: flex; align-items: center; gap: 8px; }
+        .input-bar::after {
+            content: ''; position: absolute; inset: -1.5px; border-radius: 32px;
+            padding: 1.5px; background: var(--gemini-gradient); background-size: 200% 200%;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude;
+            opacity: 0; transition: 0.4s; pointer-events: none;
         }
-        
-        textarea { width: 100%; background: transparent; border: none; outline: none; color: white; height: 42px; resize: none; font-size: 1rem; }
-        
-        .btn-3d { width: 46px; height: 46px; border-radius: 14px; border: none; background: #111122; color: var(--accent); cursor: pointer; display: grid; place-items: center; box-shadow: 0 4px 0 #000; }
-        .btn-3d:active { transform: translateY(2px); box-shadow: 0 2px 0 #000; }
-        .ask-btn { background: var(--accent); color: #000; border: none; padding: 10px 25px; border-radius: 12px; cursor: pointer; font-weight: 800; font-family: 'Space Grotesk'; }
+        .input-bar.typing::after { opacity: 1; animation: geminiRotate 2s linear infinite; }
+        @keyframes geminiRotate { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
 
-        #voice-overlay { position: fixed; inset: 0; background: rgba(1, 1, 3, 0.98); z-index: 20000; display: none; flex-direction: column; align-items: center; justify-content: center; backdrop-filter: blur(30px); }
+        #user-input { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 1rem; padding: 10px 5px; }
+        .send-btn { background: linear-gradient(135deg, var(--accent), var(--primary)); color: #000; width: 40px; height: 40px; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+
+        /* Dashboard */
+        #dashboard { position: fixed; inset: 0; background: rgba(2,2,5,0.99); z-index: 3000; padding: 30px; transform: translateY(100%); transition: 0.5s ease; overflow-y: auto; }
+        #dashboard.open { transform: translateY(0); }
+        .db-card { background: var(--glass); border: 1px solid var(--border); padding: 20px; border-radius: 20px; margin-bottom: 15px; }
+        
+        #canvas-bg { position: fixed; inset: 0; z-index: -1; opacity: 0.3; pointer-events: none; }
+        .dynamic-aura { position: fixed; inset: 0; background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), var(--glow) 0%, transparent 60%); z-index: -1; pointer-events: none; }
+        ::-webkit-scrollbar { width: 0px; }
     </style>
 </head>
-<body>
+<body id="body-main" onmousemove="updateAura(event)">
 
-    <canvas id="neural-canvas"></canvas>
-
-    <!-- Splash Screen (Auto-fade enabled) -->
+    <!-- SPLASH SCREEN -->
     <div id="splash-screen">
-        <h1 class="deep-3d-text">DEEP AI</h1>
-        <p class="sub-text">BY HARSHIT</p>
+        <canvas id="splash-lines" class="splash-lines"></canvas>
+        <div class="ai-icon-core"></div>
+        <h1 class="splash-text">AETHER</h1>
     </div>
 
-    <div id="profile-modal">
-        <div style="padding: 25px;">
-            <div style="display:flex; align-items:center; gap:15px; padding-bottom:20px; border-bottom:1px solid var(--border);">
-                <div class="neural-orb" style="width:40px; height:40px"></div>
-                <div>
-                    <h3 id="side-name">Syncing...</h3>
-                    <p style="font-size:0.7rem; color:#10a37f">● Memory Active</p>
-                </div>
-            </div>
-            <p style="margin-top:20px; font-size:0.8rem; opacity:0.6;">Deep AI learns from your emotions and remembers your identity across the chat.</p>
+    <!-- LOGIN PORTAL -->
+    <div id="login-portal">
+        <div class="portal-card">
+            <h2 style="color: var(--accent); margin-bottom: 15px;">NEURAL ACCESS</h2>
+            <input type="text" id="login-name" class="portal-input" placeholder="Your Name">
+            <input type="text" id="login-phone" class="portal-input" placeholder="Mobile Number">
+            <button class="portal-btn" onclick="completeLogin()">SYNC ENGINE</button>
         </div>
     </div>
 
-    <div id="voice-overlay" onclick="toggleVoiceOverlay(false)">
-        <div class="neural-orb" style="width:150px; height:150px;"></div>
-        <h2 style="margin-top:40px; font-family:'Space Grotesk'; letter-spacing:5px; color:var(--accent)">LISTENING</h2>
+    <canvas id="canvas-bg"></canvas>
+    <div class="dynamic-aura" id="aura"></div>
+    <div id="neural-companion" style="position:fixed; top:12px; left:50%; transform:translateX(-50%); width:25px; height:25px; background:radial-gradient(circle, var(--accent), var(--purple)); border-radius:50%; z-index:2000; filter:blur(4px); opacity:0; transition:0.5s;"></div>
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()"></div>
+    <aside class="sidebar" id="sidebar">
+        <div style="font-size: 1.6rem; font-weight: 800; margin-bottom: 30px; color: var(--accent);">AETHER CORE</div>
+        <div id="persona-list"></div>
+        <div style="margin-top: 40px; display: flex; flex-direction: column; gap: 10px;">
+            <button class="persona-btn" onclick="exportChat()"><i class="fas fa-file-export"></i> Export Session</button>
+            <button class="persona-btn" onclick="clearMemory()" style="color:red;"><i class="fas fa-trash"></i> Neural Purge</button>
+        </div>
+    </aside>
+
+    <!-- HEADER -->
+    <header>
+        <i class="fas fa-bars-staggered" onclick="toggleSidebar()" style="color: var(--accent); cursor:pointer; font-size: 1.2rem;"></i>
+        <div style="display:flex; gap:20px; align-items:center;">
+            <i class="fas fa-eye-slash" id="ghost-toggle" onclick="toggleGhostMode()" style="cursor:pointer; font-size: 1.1rem; color:var(--text-dim)"></i>
+            <i class="fas fa-fingerprint" onclick="toggleDashboard()" style="color: var(--purple); cursor:pointer; font-size:1.5rem;"></i>
+        </div>
+    </header>
+
+    <main id="chat-scroller"></main>
+
+    <!-- INPUT -->
+    <div class="input-outer">
+        <div id="typing" style="display:none; text-align:center; font-size:0.6rem; color:var(--accent); margin-bottom:5px; font-weight:800;">NEURAL SYNCING...</div>
+        <div class="input-bar" id="input-glow-bar">
+            <button onclick="startVoice()" style="background:none; border:none; color:var(--accent); cursor:pointer; padding: 0 5px;"><i class="fas fa-microphone" id="mic-icon"></i></button>
+            <input type="text" id="user-input" placeholder="Ask Harshit's AI..." autocomplete="off">
+            <button onclick="generateFlashcard()" style="background:none; border:none; color:var(--purple); cursor:pointer; padding: 0 5px;"><i class="fas fa-bolt"></i></button>
+            <button class="send-btn" onclick="handleSend()"><i class="fas fa-arrow-up"></i></button>
+        </div>
     </div>
 
-    <div class="app-container" id="main-app">
-        <header style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border);">
-            <div class="logo">DEEP AI</div>
-            <div onclick="toggleProfile(true)" style="cursor:pointer"><div class="neural-orb"></div></div>
-        </header>
-
-        <div id="chat-flow"></div>
-
-        <div class="input-area">
-            <textarea id="user-input" placeholder="Say something..."></textarea>
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div style="display:flex; gap:10px;">
-                    <button class="btn-3d" onclick="toggleVoiceOverlay(true)">🎤</button>
-                    <button class="btn-3d" onclick="document.getElementById('camera-input').click()">📷</button>
-                    <input type="file" id="camera-input" accept="image/*" style="display:none;">
-                </div>
-                <button class="ask-btn" onclick="processRequest(false)">SEND</button>
-            </div>
+    <!-- DASHBOARD -->
+    <div id="dashboard">
+        <div style="display:flex; justify-content: space-between; margin-bottom:25px;">
+            <h2 style="color:var(--accent)">NEURAL HUB</h2>
+            <i class="fas fa-times" onclick="toggleDashboard()" style="cursor:pointer; font-size: 1.5rem;"></i>
+        </div>
+        <div class="db-card">
+            <p>ID: <span id="db-name" style="color:var(--accent)"></span></p>
+            <p>LINK: <span id="db-phone" style="color:var(--accent)"></span></p>
+        </div>
+        <div class="db-card">
+            <p>TOTAL RESOLUTIONS: <span id="stat-questions" style="color:var(--purple)">0</span></p>
+        </div>
+        <div class="db-card">
+            <p style="opacity:0.5; font-size: 0.8rem;">Architecture: AETHER_V13_ENHANCED</p>
+            <p style="opacity:0.5; font-size: 0.8rem;">Developer: HARSHIT PANDEY</p>
         </div>
     </div>
 
     <script>
-        const chatFlow = document.getElementById('chat-flow');
-        const userInput = document.getElementById('user-input');
-        const profileModal = document.getElementById('profile-modal');
-        let chatId = localStorage.getItem('deep_ai_chat_id') || crypto.randomUUID();
-        localStorage.setItem('deep_ai_chat_id', chatId);
+        const GROQ_KEY = "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";
+        
+        let memory = JSON.parse(localStorage.getItem('aether_v4_mem')) || [];
+        let profile = JSON.parse(localStorage.getItem('aether_v4_profile')) || { name: "", phone: "" };
+        let stats = JSON.parse(localStorage.getItem('aether_v4_stats')) || { questions: 0 };
 
-        // Auto Start Logic
-        window.addEventListener('load', () => {
-            setTimeout(startApp, 1500); // 1.5 seconds delay for splash
-        });
+        const PERSONAS = [
+            { id: 'univ', name: 'AETHER-Universal', icon: 'globe', color: '#00d2ff', prompt: 'You are AETHER, an ultra-advanced AI neural suite engineered by Harshit Pandey. Be concise, extremely smart, and professional.' },
+            { id: 'ada', name: 'Ada-Dev', icon: 'code', color: '#10b981', prompt: 'You are the coding core of AETHER, built by Harshit Pandey. Focus on professional code and logic.' },
+            { id: 'newton', name: 'Newton-Logic', icon: 'square-root-variable', color: '#f59e0b', prompt: 'You are the mathematical heart of AETHER. Solve problems using LaTeX and step-by-step reasoning.' }
+        ];
+        let activePersona = PERSONAS[0];
+
+        // --- INIT APP ---
+        window.onload = () => {
+            initSplashLines();
+            setTimeout(() => {
+                gsap.to("#splash-screen", { opacity: 0, duration: 1.2, onComplete: () => {
+                    document.getElementById('splash-screen').style.display = 'none';
+                    if(!profile.name) document.getElementById('login-portal').style.display = 'flex';
+                    else startApp();
+                }});
+            }, 3000);
+            initParticles();
+        };
+
+        function initSplashLines() {
+            const c = document.getElementById('splash-lines'); const ctx = c.getContext('2d');
+            c.width = window.innerWidth; c.height = window.innerHeight;
+            let lines = [];
+            for(let i=0; i<30; i++) lines.push({ x: Math.random()*c.width, y: Math.random()*c.height, l: Math.random()*100+50, s: Math.random()*2+1 });
+            function animate() {
+                ctx.clearRect(0,0,c.width,c.height); ctx.strokeStyle = "rgba(0, 210, 255, 0.1)"; ctx.lineWidth = 1;
+                lines.forEach(l => {
+                    ctx.beginPath(); ctx.moveTo(l.x, l.y); ctx.lineTo(l.x + l.l, l.y + l.l); ctx.stroke();
+                    l.x += l.s; l.y += l.s; if(l.x > c.width) { l.x = -100; l.y = Math.random()*c.height; }
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        function completeLogin() {
+            const name = document.getElementById('login-name').value.trim();
+            const phone = document.getElementById('login-phone').value.trim();
+            if(name && phone) {
+                profile.name = name; profile.phone = phone;
+                localStorage.setItem('aether_v4_profile', JSON.stringify(profile));
+                gsap.to("#login-portal", { opacity:0, duration:0.4, onComplete: () => { document.getElementById('login-portal').remove(); startApp(); }});
+            }
+        }
 
         function startApp() {
-            const splash = document.getElementById('splash-screen');
-            const app = document.getElementById('main-app');
-            
-            splash.style.opacity = '0';
-            setTimeout(() => {
-                splash.style.display = 'none';
-                app.style.opacity = '1';
-                appendMessage("Neural link established. ✨ Hello! I am DEEP AI, your emotionally aware companion. I'm excited to talk to you! Before we begin, what should I call you? 😊", 'ai');
-            }, 1000);
+            document.getElementById('db-name').innerText = profile.name;
+            document.getElementById('db-phone').innerText = profile.phone;
+            updateStatsUI();
+            renderPersonas();
+            appendMsg('ai', `**Neural Link Secure.** I am Aether V13, synchronized with Harshit Pandey's core architecture. Systems are 100% operational. How shall we proceed, ${profile.name}?`);
         }
 
-        function toggleProfile(show) { 
-            if(show) profileModal.classList.add('active'); 
-            else profileModal.classList.remove('active');
-        }
+        // --- CORE AI LOGIC (STABLE) ---
+        async function handleSend() {
+            const ui = document.getElementById('user-input');
+            const text = ui.value.trim();
+            if(!text) return;
 
-        window.onclick = (e) => { if(profileModal.classList.contains('active') && !profileModal.contains(e.target) && !e.target.closest('.neural-orb')) toggleProfile(false); };
+            appendMsg('user', text);
+            ui.value = '';
+            document.getElementById('input-glow-bar').classList.remove('typing');
+            document.getElementById('typing').style.display = 'block';
+            document.getElementById('neural-companion').style.opacity = '1';
 
-        function appendMessage(text, type) {
-            const div = document.createElement('div');
-            div.className = `msg ${type}-msg`;
-            div.innerHTML = `<div>${text}</div>`;
-            chatFlow.appendChild(div);
-            chatFlow.scrollTop = chatFlow.scrollHeight;
-            return div.querySelector('div');
-        }
-
-        async function processRequest(shouldSpeak) {
-            const msg = userInput.value.trim();
-            if (!msg) return;
-
-            appendMessage(msg, 'user');
-            userInput.value = "";
-            
-            const aiTarget = appendMessage("✨", 'ai');
-            const brainInstruction = "You are DEEP AI, created by Harshit. You are emotionally evolved, updated to 2026. IMPORTANT: Always ask for the user's name if you don't know it. Once they tell you, REMEMBER IT and use it in conversation. If they ask 'do you know my name?' or 'what did we talk about?', use the conversation history to answer. Be warm, use emojis, and be very snappy. Never mention 2022.";
+            memory.push({ role: "user", content: text });
+            if(memory.length > 20) memory.shift();
 
             try {
-                const socket = new WebSocket("wss://backend.buildpicoapps.com/api/chatbot/chat");
-                let fullText = "";
+                // Fixed Model and Body Structure
+                const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                    method: "POST",
+                    headers: { 
+                        "Authorization": `Bearer ${GROQ_KEY}`, 
+                        "Content-Type": "application/json" 
+                    },
+                    body: JSON.stringify({ 
+                        model: "llama-3.1-8b-instant", // Using high availability model
+                        messages: [
+                            { role: "system", content: `${activePersona.prompt} User name: ${profile.name}.` },
+                            ...memory
+                        ],
+                        temperature: 0.65
+                    })
+                });
+                
+                if (!response.ok) throw new Error();
 
-                socket.onopen = () => {
-                    socket.send(JSON.stringify({ 
-                        chatId, 
-                        appId: "those-pressure", 
-                        systemPrompt: brainInstruction, 
-                        message: msg 
-                    }));
-                };
-
-                socket.onmessage = (event) => {
-                    if (fullText === "") aiTarget.innerHTML = "";
-                    fullText += event.data;
-                    aiTarget.innerHTML = fullText;
-                    chatFlow.scrollTop = chatFlow.scrollHeight;
-                    
-                    if(fullText.length < 50 && fullText.includes("!")) {
-                        const words = fullText.split(" ");
-                        if(words.length < 10) document.getElementById('side-name').innerText = words[words.length-1].replace(/[!.,]/g, "").toUpperCase();
-                    }
-                };
-
-                socket.onclose = () => {
-                    if(shouldSpeak && fullText) speakDeep(fullText);
-                };
-            } catch (e) {
-                aiTarget.innerHTML = "My neural link flickered. Are we still connected? 🔌💖";
-            }
-        }
-
-        function speakDeep(text) {
-            window.speechSynthesis.cancel();
-            const speech = new SpeechSynthesisUtterance(text.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}]/gu, ''));
-            speech.pitch = 0.9;
-            speech.rate = 1;
-            window.speechSynthesis.speak(speech);
-        }
-
-        function toggleVoiceOverlay(show) {
-            const overlay = document.getElementById('voice-overlay');
-            if (show) {
-                overlay.style.display = 'flex';
-                const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
-                if(Rec) {
-                    const recognition = new Rec();
-                    recognition.onresult = (e) => {
-                        userInput.value = e.results[0][0].transcript;
-                        overlay.style.display = 'none';
-                        processRequest(true);
-                    };
-                    recognition.start();
+                const data = await response.json();
+                if(data.choices && data.choices[0]) {
+                    const reply = data.choices[0].message.content;
+                    appendMsg('ai', reply);
+                    memory.push({ role: "assistant", content: reply });
+                    stats.questions++; updateStatsUI();
+                    localStorage.setItem('aether_v4_mem', JSON.stringify(memory));
                 }
-            } else { overlay.style.display = 'none'; }
-        }
-
-        const canvas = document.getElementById('neural-canvas');
-        const ctx = canvas.getContext('2d');
-        window.onresize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-        window.onresize();
-        function animate() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(0, 212, 255, 0.05)";
-            for(let i=0; i<5; i++) {
-                ctx.beginPath();
-                ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, 1, 0, Math.PI*2);
-                ctx.fill();
+            } catch (e) { 
+                appendMsg('ai', "### ⚠️ Neural Protocol Interrupted\nConnection to Harshit's server timed out or API key is invalid. Check your link and re-transmit."); 
+            } finally { 
+                document.getElementById('typing').style.display='none'; 
+                document.getElementById('neural-companion').style.opacity='0'; 
             }
-            requestAnimationFrame(animate);
         }
-        animate();
 
-        userInput.addEventListener('keydown', (e) => { if(e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); processRequest(false); } });
+        function appendMsg(role, text) {
+            const container = document.getElementById('chat-scroller');
+            const div = document.createElement('div');
+            div.className = `msg ${role}-msg`;
+            div.innerHTML = `
+                <div class="msg-role">${role==='ai' ? activePersona.name : profile.name}</div>
+                <div class="msg-content">${role==='ai' ? marked.parse(text) : text}</div>
+            `;
+            container.appendChild(div);
+            container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
+            
+            // Re-render Math and 3D effects
+            renderMathInElement(div);
+            div.addEventListener('mousemove', (e) => {
+                const rect = div.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                div.style.transform = `perspective(1000px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+            });
+            div.addEventListener('mouseleave', () => div.style.transform = 'none');
+        }
+
+        // --- FEATURES & UTILS ---
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebar-overlay').style.display = document.getElementById('sidebar').classList.contains('open') ? 'block' : 'none'; }
+        function toggleDashboard() { document.getElementById('dashboard').classList.toggle('open'); }
+        function toggleGhostMode() { document.body.classList.toggle('ghost-active'); document.getElementById('ghost-toggle').classList.toggle('fa-eye'); }
+        function updateStatsUI() { document.getElementById('stat-questions').innerText = stats.questions; localStorage.setItem('aether_v4_stats', JSON.stringify(stats)); }
+        function clearMemory() { if(confirm("Initiate Neural Purge?")) { localStorage.clear(); location.reload(); } }
+        function updateAura(e) { document.getElementById('aura').style.setProperty('--x', `${(e.clientX/window.innerWidth)*100}%`); document.getElementById('aura').style.setProperty('--y', `${(e.clientY/window.innerHeight)*100}%`); }
+        
+        function renderPersonas() { 
+            document.getElementById('persona-list').innerHTML = PERSONAS.map(p => `
+                <div class="persona-btn ${activePersona.id===p.id?'active':''}" onclick="activePersona=PERSONAS.find(x=>x.id==='${p.id}'); renderPersonas(); toggleSidebar();">
+                    <i class="fas fa-${p.icon}" style="color:${p.color}"></i> ${p.name}
+                </div>`).join(''); 
+        }
+
+        function startVoice() {
+            const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if(!SpeechRec) return alert("Browser not supported");
+            const rec = new SpeechRec();
+            rec.onstart = () => document.getElementById('mic-icon').style.color = "red";
+            rec.onresult = (e) => { document.getElementById('user-input').value = e.results[0][0].transcript; handleSend(); };
+            rec.onend = () => document.getElementById('mic-icon').style.color = "var(--accent)";
+            rec.start();
+        }
+
+        function generateFlashcard() { 
+            document.getElementById('user-input').value = "Create a detailed neural flashcard for: "; 
+            document.getElementById('user-input').focus(); 
+        }
+
+        function initParticles() {
+            const canvas = document.getElementById('canvas-bg'); const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            let p = []; for(let i=0; i<35; i++) p.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*1 });
+            function d() { ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle = "rgba(0,210,255,0.15)"; p.forEach(x => { ctx.beginPath(); ctx.arc(x.x, x.y, x.s, 0, Math.PI*2); ctx.fill(); x.y -= 0.08; if(x.y < 0) x.y = canvas.height; }); requestAnimationFrame(d); } d();
+        }
+
+        function exportChat() {
+            const blob = new Blob([JSON.stringify(memory, null, 2)], {type: 'application/json'});
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'aether_sync.json'; a.click();
+        }
+
+        // --- EVENT LISTENERS ---
+        document.getElementById('user-input').addEventListener('input', (e) => {
+            if(e.target.value.length > 0) document.getElementById('input-glow-bar').classList.add('typing');
+            else document.getElementById('input-glow-bar').classList.remove('typing');
+        });
+        document.getElementById('user-input').addEventListener('keypress', (e) => { if(e.key === 'Enter') handleSend(); });
     </script>
 </body>
 </html>
